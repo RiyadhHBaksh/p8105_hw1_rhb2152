@@ -34,13 +34,56 @@ The mean flipper length is `r round(mean_flipper_length, 2)` mm.
 
 The scatterplot of `flipper_length_mm` versus `bill_length_mm` is shown below, with points colored by `species`.
 
-
 ```{r, message=FALSE, warning=FALSE}
 ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
 ggsave("penguins.png")
 ```
 
-
 # Problem 2
 
+The dataframe is created below.
 
+```{r, message=FALSE}
+library(tidyverse)
+variable_df = tibble(
+  vec_numeric = rnorm(10),
+  vec_logical = vec_numeric > 0,
+  vec_char = c("a","b","c","d","e","f","g","h","i","j"),
+  vec_factor = factor(c("low", "medium", "low", "medium", "high", "high", "low", "low", "medium", "medium"))
+)
+
+show(variable_df)
+```
+The means of each variable is taken below. The mean is correctly calculated for `vec_numeric` since these are numbers, and is correctly calculated for `vec_logical` since `TRUE` and `FALSE` are coded as 1 and 0, respectively. However, the mean is not calculated for `vec_char` and `vec_factor` since these are stored as text and the `mean()` function requires numeric values.
+
+```{r}
+mean(pull(variable_df, vec_numeric))
+```
+
+
+```{r}
+mean(pull(variable_df, vec_logical))
+```
+
+
+```{r}
+mean(pull(variable_df, vec_char))
+```
+
+```{r}
+mean(pull(variable_df, vec_factor))
+```
+
+If the `as.numeric()` function is applied, then `vec_logical` is correctly understood as either 1 or 0. For `vec_char`, the function results in `NA` since it is not defined what a character represents numerically. For `vec_factor`, the function results in unique numbers corresponding to each factor, although there is not a apparent order or pattern to how the numbers are corresponded, again since R does not understand the ordered meaning of text. These results explain why the mean function worked well for the logical vector, but couldn't work for the character or factor vectors.
+
+```{r, eval=FALSE}
+as.numeric(pull(variable_df, vec_logical))
+```
+
+```{r, eval=FALSE, message=FALSE}
+as.numeric(pull(variable_df, vec_char))
+```
+
+```{r, eval=FALSE}
+as.numeric(pull(variable_df, vec_factor))
+```
