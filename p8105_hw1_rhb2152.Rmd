@@ -7,5 +7,40 @@ output: github_document
 
 # Problem 1
 
+```{r, message=FALSE}
+library(tidyverse)
+data("penguins", package = "palmerpenguins")
+```
+
+The following are the variables within the `penguins` dataset.
+
+* `species`: either "Adelie", "Chinstrap", or "Gentoo"
+* `island`: either "Biscoe", "Dream", or "Torgersen"
+* `bill_length_mm`: bill length in mm
+* `bill_depth_mm`: bill depth in mm
+* `flipper_length_mm`: flipper length in mm
+* `body_mass_g`: body mass in grams
+* `sex`: either male or female
+* `year`: either 2007, 2008, or 2009
+
+The dataset has `r nrow(penguins)` rows and `r ncol(penguins)` columns.
+
+```{r}
+flipper_length = penguins$flipper_length_mm
+mean_flipper_length = mean(flipper_length, na.rm = TRUE)
+```
+
+The mean flipper length is `r round(mean_flipper_length, 2)` mm.
+
+The scatterplot of `flipper_length_mm` versus `bill_length_mm` is shown below, with points colored by `species`.
+
+
+```{r, message=FALSE, warning=FALSE}
+ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
+ggsave("penguins.png")
+```
+
 
 # Problem 2
+
+
